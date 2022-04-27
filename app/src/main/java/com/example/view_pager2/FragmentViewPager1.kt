@@ -1,14 +1,15 @@
 package com.example.view_pager2
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.view_pager2.di.ListImages
-import org.w3c.dom.Text
 
 
-class FragmentViewPager1 : Fragment(R.layout.fragment_view_pager1) {
+class FragmentViewPager1 : Fragment() {
 
     companion object{
         const val KEY_TITLE = "title"
@@ -25,8 +26,10 @@ class FragmentViewPager1 : Fragment(R.layout.fragment_view_pager1) {
             return fragment
         }
     }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_view_pager1, container,false)
 
         val title = view.findViewById<TextView>(R.id.idName)
         val description = view.findViewById<TextView>(R.id.idDescription)
@@ -35,6 +38,8 @@ class FragmentViewPager1 : Fragment(R.layout.fragment_view_pager1) {
             title.text = it.getString(KEY_TITLE)
             description.text = it.getString(KEY_DESCRIPTION)
         }
+
+        return view
     }
 
 }
