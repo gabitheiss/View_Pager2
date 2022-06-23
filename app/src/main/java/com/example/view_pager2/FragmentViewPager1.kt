@@ -1,15 +1,15 @@
 package com.example.view_pager2
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.example.view_pager2.databinding.FragmentViewPager1Binding
 import com.example.view_pager2.di.ListImages
 
 
-class FragmentViewPager1 : Fragment() {
+class FragmentViewPager1 : Fragment(R.layout.fragment_view_pager1) {
+
+    private lateinit var binding: FragmentViewPager1Binding
 
     companion object{
         const val KEY_TITLE = "title"
@@ -27,19 +27,15 @@ class FragmentViewPager1 : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_view_pager1, container,false)
-
-        val title = view.findViewById<TextView>(R.id.idName)
-        val description = view.findViewById<TextView>(R.id.idDescription)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentViewPager1Binding.bind(view)
+        val title = binding.idName
+        val description = binding.idDescription
 
         arguments?.let {
             title.text = it.getString(KEY_TITLE)
             description.text = it.getString(KEY_DESCRIPTION)
         }
-
-        return view
     }
-
 }
