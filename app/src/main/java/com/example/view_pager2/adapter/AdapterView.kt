@@ -8,9 +8,9 @@ import com.example.view_pager2.di.ListImages
 
 class AdapterView(fragmentActivity: FragmentActivity, private val list : List<ListImages>) : FragmentStateAdapter(fragmentActivity) {
 
-    override fun getItemCount(): Int  = list.size * Int.MAX_VALUE
+    override fun getItemCount(): Int  = list.size
 
     override fun createFragment(position: Int): Fragment {
-        return FragmentViewPager1.newInstance(list[position % list.size ])
+        return FragmentViewPager1.newInstance(list[position])
     }
 }
