@@ -10,7 +10,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var adapterView: AdapterView
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,9 +26,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         with(binding) {
-            adapterView = AdapterView(this@MainActivity, list)
-            viewPager2.adapter = adapterView
-
+            viewPager2.adapter = AdapterView(this@MainActivity, list)
             TabLayoutMediator(tabLayoutView, viewPager2) { tab, position ->
                 when (list[position].type) {
                     TabType.CARD -> {
@@ -56,11 +53,6 @@ class MainActivity : AppCompatActivity() {
                         tab.setIcon(R.drawable.ic_pix)
                         tab.setText(R.string.pix)
                     }
-                }
-
-                tabLayoutView.getTabAt(position).apply {
-                    tab.view.layoutParams?.width = resources.getDimensionPixelSize(R.dimen.dimen_100dp)
-                    tab.view.layoutParams?.height = resources.getDimensionPixelSize(R.dimen.dimen_100dp)
                 }
             }.attach()
         }
