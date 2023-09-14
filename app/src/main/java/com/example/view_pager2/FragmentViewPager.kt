@@ -3,25 +3,24 @@ package com.example.view_pager2
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.example.view_pager2.databinding.FragmentViewPager1Binding
+import com.example.view_pager2.databinding.FragmentViewPagerBinding
 import com.example.view_pager2.di.ListImages
 
+class FragmentViewPager : Fragment(R.layout.fragment_view_pager) {
 
-class FragmentViewPager1 : Fragment(R.layout.fragment_view_pager1) {
-
-    private lateinit var binding: FragmentViewPager1Binding
+    private lateinit var binding: FragmentViewPagerBinding
 
     companion object{
         const val KEY_TITLE = "title"
         const val KEY_DESCRIPTION = "description"
 
-        fun newInstance(list : ListImages) : FragmentViewPager1{
+        fun newInstance(list : ListImages) : FragmentViewPager{
             val args = Bundle().apply {
                 putString(KEY_TITLE, list.title)
                 putString(KEY_DESCRIPTION, list.description)
             }
 
-            val fragment = FragmentViewPager1()
+            val fragment = FragmentViewPager()
             fragment.arguments = args
             return fragment
         }
@@ -29,7 +28,7 @@ class FragmentViewPager1 : Fragment(R.layout.fragment_view_pager1) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentViewPager1Binding.bind(view)
+        binding = FragmentViewPagerBinding.bind(view)
         val title = binding.idName
         val description = binding.idDescription
 
