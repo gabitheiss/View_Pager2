@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.example.view_pager2.adapter.AdapterView
 import com.example.view_pager2.databinding.ActivityMainBinding
 import com.example.view_pager2.databinding.TabSelectorIconViewBinding
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         with(binding) {
+            linearLayoutInverted.isVisible = false
             viewPager2.adapter = AdapterView(this@MainActivity, list)
             TabLayoutMediator(tabLayoutView, viewPager2) { _, position ->
                 when (list[position].type) {
@@ -57,36 +59,74 @@ class MainActivity : AppCompatActivity() {
                 }
             }.attach()
 
-            buttonBrown.setOnClickListener {
-                tabLayoutView.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-                    override fun onTabSelected(tab: TabLayout.Tab?) {
-                        tab?.let {
-                            updateTabIcon(tabLayoutView, it.position, R.color.brown_mongoose)
-                        }
-                    }
-
-                    override fun onTabUnselected(tab: TabLayout.Tab?) {
-                        tab?.let {
-                            updateTabIcon(tabLayoutView, it.position, R.color.black)
-                        }
-                    }
-
-                    override fun onTabReselected(tab: TabLayout.Tab?) {
-                        //do nothing
-                    }
-                })
+            buttonBlack.setOnClickListener {
+                linearLayoutInverted.isVisible = true
+                if (!linearLayout.isVisible) {
+                    linearLayout.isVisible = true
+                }
+                tabLayoutView.setSelectedTabIndicatorColor(ContextCompat.getColor(this@MainActivity, R.color.black))
+                setupTabLayoutPrime(tabLayoutView, R.color.black, R.color.black)
             }
+
+            buttonBrown.setOnClickListener {
+                linearLayoutInverted.isVisible = true
+                if (!linearLayout.isVisible) {
+                    linearLayout.isVisible = true
+                }
+                tabLayoutView.setSelectedTabIndicatorColor(ContextCompat.getColor(this@MainActivity, R.color.brown_mongoose))
+                setupTabLayoutPrime(tabLayoutView, R.color.brown_mongoose, R.color.black)
+            }
+
+            buttonBlackInverted.setOnClickListener {
+                linearLayoutInverted.isVisible = false
+                linearLayout.isVisible = true
+                if (!linearLayoutInverted.isVisible) {
+                    linearLayout.isVisible = true
+                }
+                tabLayoutView.setSelectedTabIndicatorColor(ContextCompat.getColor(this@MainActivity, R.color.black))
+                setupTabLayoutPrime(tabLayoutView, R.color.black, R.color.black)
+            }
+
+            buttonBrownInverted.setOnClickListener {
+                linearLayoutInverted.isVisible = false
+                linearLayout.isVisible = true
+                if (!linearLayoutInverted.isVisible) {
+                    linearLayout.isVisible = true
+                }
+                tabLayoutView.setSelectedTabIndicatorColor(ContextCompat.getColor(this@MainActivity, R.color.brown_mongoose))
+                setupTabLayoutPrime(tabLayoutView, R.color.brown_mongoose, R.color.black)
+            }
+
         }
     }
 
 
-    private fun updateTabIcon(tabLayoutView: TabLayout, position: Int, color: Int) {
+    private fun setupTabLayoutPrime(tabIndicatorMethodView: TabLayout, colorSelected: Int, colorUnselected: Int) {
+        tabIndicatorMethodView.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.let {
+                    updateColorIconAndLabel(tabIndicatorMethodView, it.position, colorSelected)
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                tab?.let {
+                    updateColorIconAndLabel(tabIndicatorMethodView, it.position, colorUnselected)
+                }
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                //do nothing
+            }
+        })
+    }
+
+    private fun updateColorIconAndLabel(tabLayoutView: TabLayout, position: Int, color: Int) {
         val tab = tabLayoutView.getTabAt(position)
         tab?.let {
             if (it.customView is View) {
-                val binding = TabSelectorIconViewBinding.bind(it.customView!!)
-                binding.apply {
-                    iconTabView.setColorFilter(ContextCompat.getColor(this@MainActivity, color), PorterDuff.Mode.SRC_IN)
+                TabSelectorIconViewBinding.bind(it.customView!!).apply {
+                    tabIconView.setColorFilter(ContextCompat.getColor(this@MainActivity, color), PorterDuff.Mode.SRC_IN)
                     tabLabelView.setTextColor(ContextCompat.getColor(this@MainActivity, color))
                 }
             }
@@ -97,7 +137,7 @@ class MainActivity : AppCompatActivity() {
         tabLayoutBinding = TabSelectorIconViewBinding.inflate(layoutInflater)
         val newTabIndicator = tabLayoutView.newTab()
         tabLayoutBinding.apply {
-            iconTabView.setImageResource(icon)
+            tabIconView.setImageResource(icon)
             tabLabelView.setText(label)
         }
         newTabIndicator.customView = tabLayoutBinding.root
